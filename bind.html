@@ -1,0 +1,17 @@
+<html>
+<head>
+<h1>this is a function bind</h1>
+<p id="demo"></p>
+<script>
+const name={
+firstname:"john",
+lastname:"doe",
+display:function(){
+let x=document.getElementById("demo");
+x.innerHTML=this.firstname+" "+this.lastname;
+}
+}
+person.display();
+</script>
+</head>
+</html>
