@@ -1,0 +1,16 @@
+<html>
+<head>
+<h1>using constructor</h1>
+<p id="demo"></p>
+<script>
+function person(first,last,age,eye){
+this.firstname=first;
+this.lastname=last;
+this.age=age;
+this.eye=eye;
+}
+const myFather=new person("john","doe",21,"blue");
+document.getElementById("demo").innerHTML="my father is"+myFather.age;
+</script>
+</head>
+</html>
