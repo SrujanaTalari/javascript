@@ -1,0 +1,17 @@
+<html>
+<head>
+<h1>using default value</h1>
+<p id="demo"></p>
+<script>
+function person(first,last,age,eye){
+this.firstname=first;
+this.lastname=last;
+this.age=age;
+this.eye=eye;
+this.nationality="English";
+}
+const myFather=new person("john","doe",21,"blue");
+document.getElementById("demo").innerHTML="my father nationality is"+myFather.nationality;
+</script>
+</head>
+</html>
