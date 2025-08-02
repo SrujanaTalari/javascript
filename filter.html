@@ -1,0 +1,12 @@
+<html>
+<head>
+<p id="demo"></p>
+<script>
+const age=[33,34,15,47];
+document.getElementById("demo").innerHTML=age.filter(checkAdults);
+function checkAdults(age) {
+   return age>=18;
+}
+</script>
+</head>
+</html>
