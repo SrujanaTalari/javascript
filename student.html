@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Student Management</title>
+</head>
+
+<body class="container">
+    <!-- <h2>Student Attendance System</h2> -->
+
+    <div>
+        <ul class="menu">
+            <h2>Student Attendance System</h2>
+            <li><button class="green" onclick="login('admin')">Admin Login</button></li>
+            <li><button class="green" onclick="login('teacher')">Teacher Login</button></li>
+            <li><button class="green" onclick="login('student')">Student Login</button></li>
+            <li><button class="green" onclick="logout()">Logout</button></li>
+            <p class="red" id="user-status">Not Logged In</p>
+        </ul>
+    </div>
+    <!-- Search Container -->
+    <!-- <div class="search-container">
+    <input type="text" id="search-bar" placeholder="Search..." onkeyup="filterTable()">
+    <i class="fas fa-search"></i>
+</div> -->
+
+    <!-- Search Container -->
+
+    <div class="search-container">
+        <i class="fas fa-search search-icon" onclick="toggleSearchBar()"></i>
+        <svg class="search-icon" onclick="toggleSearchBar()" width="20" height="20" viewBox="0 0 24 24">
+            <path fill="black"
+                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5a6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14c-2.49 0-4.5-2.01-4.5-4.5S7.01 5 9.5 5s4.5 2.01 4.5 4.5S11.99 14 9.5 14z" />
+        </svg>
+        <input type="text" id="search-bar" class="search-bar" placeholder="Search..." onkeyup="filterTable()">
+        <button id="search-btn" class="search-btn" onclick="filterTable()">Search</button>
+    </div>
+
+    <!-- Student Entry Form -->
+<form id="form1">
+  <input id="name" placeholder="Name" required>
+  <input id="number" placeholder="Number" required>
+  <input id="city" placeholder="City" required>
+  <input id="rollNo" placeholder="Roll No" required>
+  <input id="Section" placeholder="Section" required>
+  <input id="Branch" placeholder="Branch" required>
+  <button type="submit">Add Student</button>
+</form>
+
+<!-- Student Table -->
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>Name</th><th>Number</th><th>City</th><th>Roll No</th><th>Section</th><th>Branch</th><th>Date</th><th>Attendance</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<!-- Button for teacher to submit attendance -->
+<button id="submit-attendance-btn" style="display:none;">Submit Attendance</button>
+
+<!-- Container for attendance records table (admin view) -->
+<div id="attendance-records-container"></div>
+
+    <div class="studentData">
+            <form action="" id="form1">
+            <input type="text" placeholder="Name" id="name" required>
+            <input type="tel" placeholder="Phone" id="number" required maxlength="13" oninput="formatNumber(this)">
+            <input type="text" placeholder="City" id="city" required>
+            <input type="text" placeholder="Roll No" id="rollNo" required>
+            <input type="text" id="Section" placeholder="Section (A, B, C)" required>
+            <input type="text" id="Branch" placeholder="Branch" required>
+            <input type="submit" class="btn btn-warning">
+        </form>
+
+
+    </div>
+
+    <div id="filter-container">
+        <select id="section-filter">
+            <option value="all">All Sections</option>
+        </select>
+        <button id="filter-btn">Submit</button>
+    </div>
+
+
+
+     <div class="container-fluid">
+            <table class="table w-100">
+
+        <!-- Student Table -->
+<table>
+  <thead>
+    <tr>
+      <th>#</th><th>Name</th><th>Number</th><th>City</th><th>Roll No</th><th>Section</th><th>Date</th><th>Attendance</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<!-- Button for teacher to submit attendance -->
+<button id="submit-attendance-btn" style="display:none;">Submit Attendance</button>
+
+<!-- Container for attendance records table (admin view) -->
+<div id="attendance-records-container"></div>
+
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+        <!-- <button id="save-attendance-btn">Submit Attendance</button> -->
+    </div> 
+</div> 
+
+
+    <button id="save-attendance-btn" class="hidden" onclick="submitAttendance()">Submit Attendance</button>
+
+    <!-- Admin View: Submitted Attendance -->
+    <div id="admin-attendance" class="hidden">
+        <h3>Student Submitted Records (Admin View)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Name</th>
+                    <th>Roll No.</th>
+                    <th>Section</th>
+                    <th>Branch</th>
+                    <th>Attendance</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-tbody"></tbody>
+        </table>
+    </div>
+<!-- 
+    <script>
+        let students = JSON.parse(localStorage.getItem("students")) || [];
+        let attendanceRecords = JSON.parse(localStorage.getItem("attendanceRecords")) || {};
+        let currentUser = { role: null };
+
+        function login(role) {
+            currentUser.role = role;
+            document.getElementById("user-status").textContent = `Logged in as ${role}`;
+            document.getElementById("save-attendance-btn").classList.toggle("hidden", role !== "teacher");
+            document.getElementById("admin-attendance").classList.toggle("hidden", role !== "admin");
+            displayStudents();
+            if (role === "admin") displayAttendanceRecords();
+        }
+
+        function logout() {
+            currentUser.role = null;
+            document.getElementById("user-status").textContent = "Not Logged In";
+            document.getElementById("save-attendance-btn").classList.add("hidden");
+            document.getElementById("admin-attendance").classList.add("hidden");
+        }
+
+        document.getElementById("form1").addEventListener("submit", function (e) {
+            e.preventDefault();
+            let student = {
+                name: document.getElementById("name").value,
+                number: document.getElementById("number").value,
+                city: document.getElementById("city").value,
+                rollNo: document.getElementById("rollNo").value,
+                section: document.getElementById("section").value,
+                branch: document.getElementById("branch").value
+            };
+            students.push(student);
+            localStorage.setItem("students", JSON.stringify(students));
+            this.reset();
+            displayStudents();
+        });
+
+        function displayStudents() {
+            let tbody = document.getElementById("student-tbody");
+            tbody.innerHTML = "";
+            students.forEach((student, index) => {
+                let row = `<tr>
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td>${student.number}</td>
+                    <td>${student.city}</td>
+                    <td>${student.rollNo}</td>
+                    <td>${student.section}</td>
+                    <td>${student.branch}</td>
+                    <td>${new Date().toISOString().split("T")[0]}</td>
+                    <td><select class="attendance-select" data-index="${index}">
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                    </select></td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function submitAttendance() {
+            let today = new Date().toISOString().split("T")[0];
+            let attendanceData = [];
+
+            document.querySelectorAll(".attendance-select").forEach(select => {
+                let index = select.getAttribute("data-index");
+                let student = students[index];
+
+                let record = {
+                    name: student.name,
+                    rollNo: student.rollNo,
+                    section: student.section,
+                    branch: student.branch,
+                    attendance: select.value,
+                    date: today
+                };
+
+                attendanceData.push(record);
+                select.setAttribute("disabled", "true");
+            });
+
+            attendanceRecords[today] = attendanceData;
+            localStorage.setItem("attendanceRecords", JSON.stringify(attendanceRecords));
+            alert("Attendance submitted successfully!");
+            displayAttendanceRecords();
+        }
+
+        function displayAttendanceRecords() {
+            let tbody = document.getElementById("attendance-tbody");
+            tbody.innerHTML = "";
+            Object.values(attendanceRecords).flat().forEach((record, index) => {
+                tbody.innerHTML += `<tr>
+                    <td>${index + 1}</td>
+                    <td>${record.name}</td>
+                    <td>${record.rollNo}</td>
+                    <td>${record.section}</td>
+                    <td>${record.branch}</td>
+                    <td>${record.attendance}</td>
+                    <td>${record.date}</td>
+                </tr>`;
+            });
+        }
+    </script>
+    -->
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="./student.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Admin Controlled Student Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+            text-align: center;
+        }
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        .present { background-color: green; color: white; }
+        .absent { background-color: red; color: white; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <h2>Admin Login to Manage Attendance</h2>
+
+    <button onclick="adminLogin()">Admin Login</button>
+    <button onclick="adminLogout()">Logout</button>
+    <p id="admin-status">Not Logged In</p>
+
+    <div class="studentData hidden" id="admin-content">
+        <h3>Add Student</h3>
+        <form id="form1">
+            <input type="text" placeholder="Name" id="name" required>
+            <input type="number" placeholder="Number" id="number" required>
+            <input type="text" placeholder="City" id="city" required>
+            <input type="number" placeholder="Roll No" id="rollNo" required>
+            <input type="submit" class="btn btn-warning" value="Add Student">
+        </form>
+
+        <h3>Student Attendance List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Number</th>
+                    <th>City</th>
+                    <th>Roll No.</th>
+                    <th>Attendance</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+
+  
+     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./student.js"></script>
+</body>
+</html> -->

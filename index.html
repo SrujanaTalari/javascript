@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Student Management</title>
+  </head>
+  <body>
+
+    <div class="heading">
+        <h1>Attendence Management System</h1>
+    </div>
+    <h1 id="school">Santhiram Engineering College (AUTONOMOUS) </h1>
+
+    <div class="login" >
+        <div class="image">
+            <img src="https://cipher.tagoreeducons.com/uploaded_images/48106Santhiram%20Engineering%20College.jpg" alt="">
+            <!-- <img src="../Downloads/download.jpg" alt=""> -->
+        </div>
+        <div class="right">
+          <h2 class="login_head"> Login </h2>
+          <form action="" id="form">
+              <!-- <input type="text" id="name" placeholder="username"> -->
+              <!-- <input type="password" id="password" placeholder="Password"> -->
+              
+              
+              <div class="password-container">
+                <input type="text" id="name" placeholder="Username">
+            
+                <div class="password-field">
+                  <input type="password" id="password" placeholder="Password">
+                  <i class="fas fa-eye toggle-eye" onclick="togglePassword()" id="eyeIcon"></i>
+                </div>
+              </div>
+            
+              <script>
+                function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eyeIcon');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash'); // closed eye
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye'); // open eye
+      }
+    }
+              </script>
+              <input type="submit" class="btn btn-warning" id="submit" value="Submit">
+          </form>
+      </div>
+      
+
+        <!-- <div class="right">
+            <h2 class="login_head"> Login </h2>
+            <form action="" id="form">
+                <input type="text" id="name" placeholder="username">
+                <input type="password" id="password" placeholder="Password">
+                
+                    <input type="submit" class="btn btn-warning" id="submit" value="Submit">
+            </form>
+        </div> -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
