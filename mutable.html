@@ -1,0 +1,19 @@
+<html>
+<body>
+<h1>javascript objects are mutable.it can change the values which is present in the data</h1>
+<p id="demo"></p>
+<script>
+const person={
+ firstname:"shiv",
+ lastname:"manda",
+ age=21,
+};
+
+
+
+const x=person;
+x.age=20;
+document.getElementById("demo").innerHTML=person.firstname+ "is" +person.age+ "years old";
+</script>
+</body>
+</html>
